@@ -2,12 +2,8 @@
 <html lang="en">
 
 <head>
-  <title>Web Sprint 3 Challenge</title>
+  <title>Web Sprint 2 Challenge</title>
   <style>
-    * {
-      font-family: 'Times New Roman', Times, serif
-    }
-
     .widget {
       padding: 0 0 0.5rem 0.65rem;
       margin-bottom: 0.5rem;
@@ -16,216 +12,243 @@
     }
 
     .widget p {
+      font-size: 0.75rem;
       font-style: italic;
+    }
+
+    .row>div {
+      display: inline-block;
+      background-color: lightgrey;
+      border: 1px solid grey;
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+    }
+
+    #outcome {
+      font-size: 3rem;
     }
 
   </style>
 </head>
 
 <body>
-  <h1>Web Sprint 3 Challenge </h1>
+  <h1>Web Sprint 2 Challenge </h1>
   <p>❗ See the last script tag for instructions on completing your Challenge</p>
-  <!-- widgets start, do not modify -->
+  <!-- widgets start -->
   <section class="widget">
-    <p>This widget uses the EBook class</p>
-    <textarea placeholder="Write your book"></textarea><br />
-    <input type="number" placeholder="Characters per page" /><br /><br />
-    <button id="turnPage">Turn Page</button>
-    <p id="bookPage"></p>
+    <p>Click on a square! (this widget uses the mineSweeper function)</p>
+    <div class="row" id="row1">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="row" id="row2">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="row" id="row3">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <span id="outcome"></span>
   </section>
+  <form class="widget">
+    <p>Type a ten-digit number! (this widget uses the normalizePhoneNumber function)</p>
+    <input type="text" id="phoneNumInput" maxlength="10" />
+    <span id="normalized"></span>
+  </form>
   <!-- widgets end -->
 
   <!-- The first script tag loads a library called lodash that helps with testing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
   <script id="challenge">
-    // In CHALLENGES 1-4 you will write JavaScript classes
+    // In CHALLENGES 1-6 you will write JavaScript functions
 
-    // ❗ Do not rename the classes provided
-    // ❗ Do not alter the position of the script tags
+    // ❗ Functions are scaffolded for you, but are missing their parameters and bodies
+    // ❗ Do not rename the functions provided, and do not create any other script tags
+    // ❗ Do not modify the location of the two script tags in this document
     // ❗ Debug properly using the Console
 
-    // 👉 CHALLENGE 1 - Integers
-    class Integers {
-      // 🧠 Constructor takes **any** number of arguments, which are integers
-      // 🧠 Instances have an `ints` property which is an array holding the integers above in the same order
-      // 🧠 Implement a `getAll` method which returns the data held in the `ints` property
-      // 🧠 Implement a `getEvens` method which returns an array with the integers that are even
-      // 🧠 Implement a `getNegatives` method which returns an array with the integers that negative
-      // 🧠 Implement a `getAllSquared` method which returns an array with the integers squared
-      // 🧠 Implement a `pop` method which removes the last integer from `ints`  and returns it
-      // 🧠 Implement a `push` method which takes an int and pushes it to the end of `ints`, and returns the updated `ints` property
-      // 🧠 Implement a `getEveryNth` method which takes an int `n` and returns an array with the ints at position 0, n, n + n, n + n + n, etc
-      // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
-      // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
-      // ❗ WARNING: note that none of the methods actually mutate the `ints` property
-      constructor(...ints) {
-        this.ints = ints
+    // 👉 CHALLENGE 1
+    function profileActivation(profile, reason) {
+      // 🧠 profileActivation takes two arguments, profile and reason, which are an object and a string respectively
+      //  The reason arg is only used -and therefore required- to deactivate profiles, not to activate them
+      //  The profile arg has an `active` property holding a Boolean value
+      //    * If profile is active, profileActivation deactivates it and writes a `reason` prop holding the reason
+      //    * If profile is inactive, profileActivation activates it and deletes the `reason` prop from the object
+      //    * In both cases the updated profile object is returned
+      // 🧠 Edge cases:
+      //    * If the profile is inactive but its `reason` prop is **missing**, return the string "confirm status manually"
+      //    * If the profile is active but it has a `reason` prop, return the string "confirm status manually"
+      //    * If the profile is **missing** an `active` prop, return the string "impossible to ascertain status"
+      // 🌟 HINT: to confirm the existence of a prop, check that its value is not undefined
+      if (profile.active === undefined) {
+        return "impossible to ascertain status"
       }
-      getAll() { return this.ints }
-      getEvens() { return this.ints.filter(int => !(int % 2)) }
-      getNegatives() { return this.ints.filter(int => int < 0) }
-      getAllSquared() { return this.ints.map(int => int ** 2) }
-      pop() { return this.ints.pop() }
-      push(int) {
-        this.ints.push(int)
-        return this.getAll()
+      if (
+        (!profile.active && profile.reason === undefined) ||
+        (profile.active && profile.reason !== undefined)
+      ) {
+        return "confirm status manually"
       }
-      getEveryNth(n) {
-        let result = []
-        for (let idx = 0; idx < this.ints.length; idx += n) {
-          result.push(this.ints[idx])
-        }
-        return result
+      if (profile.active) {
+        profile.active = false
+        profile.reason = reason
+      } else {
+        profile.active = true
+        delete profile.reason
       }
-      getAllReversed() {
-        let result = []
-        for (let idx = this.ints.length - 1; idx >= 0; idx--) {
-          result.push(this.ints[idx])
-        }
-        return this.ints
-      }
+      return profile
     }
 
-    // 👉 CHALLENGE 2 NerfGun
-    class NerfGun {
-      // 🧠 Constructor takes one argument: the total number of projectiles supported by the instance
-      // 🧠 New instances initialize fully loaded and with the safety on
-      // 🧠 Instances have a `shoot` method that takes no arguments:
-      //      * If there is ammo left and safety is off, method consumes one projectile and returns the string "Bang!"
-      //      * Shooting on empty or with the safety on, returns the string "Click!"
-      // 🧠 Instances have a `reload` method that takes a number and tops up the instance by that number
-      //      * Reloading returns a string in the following format: "<number> projectiles left!"
-      //      * Reloading by more than capacity fills the instance to capacity
-      //      * Passing an argument which is not a number larger than zero returns the string "Error reloading!"
-      // 🧠 Instances have a `toggleSafety` method that takes no arguments and switches the state of the safety
-      //      * When engaging the safety, return "Safety enabled!"
-      //      * When disengaging the safety, return "Safety disabled!"
-      // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
-      constructor(capacity) {
-        this.capacity = capacity
-        this.magazine = capacity
-        this.safety = true
+    // 👉 CHALLENGE 2
+    function mineSweeper(grid, x, y) {
+      // 🧠 mineSweeper takes a grid as its first argument, and coordinates x and y as the second and third args
+      //  The grid is an array of arrays in the following format: [["🟥","🟦","🟥"],["🟦","🟥","🟥"],["🟥","🟦","🟦"]]
+      //  Each subarray is a row of the grid, the first subarray being the top row:
+      //  [
+      //    ["🟥", "🟦", "🟥"],
+      //    ["🟦", "🟥", "🟥"],
+      //    ["🟥", "🟦", "🟦"]
+      //  ]
+      //  The coordinates x and y are numbers: either 1 or 2 or 3
+      //    * An x = 1 and y = 1 means the top-left square
+      //    * An x = 3 and y = 1 means the top-right square
+      //    * An x = 3 and y = 3 means the bottom-right square
+      //  Red squares are mines and blue squares are safe
+      //    * If mineSweeper is called with such coordinates that the player lands on red, return the string "🟥 💀"
+      //    * If the player lands on blue, return the string "🟦 🥳"
+      // 🧠 Edge cases:
+      //    * If the x or y coordinates are under 1 or over 3, return the string "invalid coordinates"
+      if (x < 1 || x > 3 || y < 1 || y > 3) {
+        return "invalid coordinates"
       }
-      shoot() {
-        if (this.magazine > 0 && !this.safety) {
-          this.magazine--
-          return "Bang!"
-        } else {
-          return "Click!"
-        }
-      }
-      reload(num) {
-        if (typeof num !== 'number' || num <= 0) {
-          return "Error reloading!"
-        }
-        const empties = this.capacity - this.magazine
-        if (num > empties) {
-          this.magazine = this.capacity
-        } else {
-          this.magazine += num
-        }
-        return `${this.magazine} projectiles left!`
-      }
-      toggleSafety() {
-        this.safety = !this.safety
-        return `Safety ${this.safety ? "en" : "dis"}abled!`
-      }
+      const xIndex = x - 1
+      const yIndex = y - 1
+      const square = grid[yIndex][xIndex]
+      if (square === "🟥") return "🟥 💀"
+      return "🟦 🥳"
     }
 
-    // 👉 CHALLENGE 3 EBook
-    class EBook {
-      // 🧠 Constructor takes two arguments:
-      //      * First arg is a string with the whole text of the book
-      //      * Second arg is the number of characters contained in a single page of the book
-      // 🧠 Instances have a `next` method:
-      //      * It takes no args and returns the next page of the book
-      //      * If the next page is empty because we have reached the end, return null instead
-      // 🧠 Example of usage:
-      //    const ebook = new EBook('abcdefg', 3)
-      //    ebook.next() // returns "abc"
-      //    ebook.next() // returns "def"
-      //    ebook.next() // returns "g"
-      //    ebook.next() // returns null
-      // 🌟 HINT: remember about the `slice` method of arrays
-      // ❗ Feel free to implement `back`, although this is not required nor graded
-      constructor(text, charsPerPage) {
-        this.currentPage = 0
-        this.charsPerPage = charsPerPage
-        this.text = text
-      }
-      next() {
-        const startChar = this.currentPage * this.charsPerPage
-        const nextToLastChar = startChar + this.charsPerPage
-        const result = this.text.slice(startChar, nextToLastChar)
-        if (result) {
-          this.currentPage++
-          return result
+    // 👉 CHALLENGE 3
+    function booleanize(obj) {
+      // 🧠 booleanize takes an object as its single argument, which can have any number of properties
+      // Loop over the properties and then return the object, after applying the following transformations:
+      //    * If a value is the number zero, it must be transformed into the Boolean false
+      //    * If a value is the number one, it must be transformed into the Boolean true
+      //    * If a value is null, the whole key-value pair must be deleted from the object
+      // 🧠 Edge cases:
+      //    * If a property name exceeds 9 characters, return the string "shorten all prop names to 9 chars or less"
+      // 🌟 HINT: careful not to perform any unintended changes on the object
+      for (let key in obj) {
+        if (key.length > 9) {
+          return "shorten all prop names to 9 chars or less"
         }
-        return null
+        if (obj[key] === null) {
+          delete obj[key]
+        }
+        if (obj[key] === 0) {
+          obj[key] = false
+        } else if (obj[key] === 1) {
+          obj[key] = true
+        }
       }
+      return obj
     }
 
-    // 👉 CHALLENGE 4 AntFarm
-    class AntFarm {
-      // 🧠 Constructor takes **any** number of arguments, which are strings: the names of your ants
-      // 🧠 Instances of AntFarm have an `ants` property holding an array of ants:
-      //      * Each ant is an object with a `name` prop and a `health` prop that starts at 100
-      // 🧠 Instances of AntFarm have a `work` method:
-      //      * When invoked your ants do chores at a cost of 20 health points each
-      //      * The method takes no arguments and returns the string "<ant number> ants starting work!"
-      //      * If the `health` of any ant decreases to zero or below, it dies and is removed from `ants`
-      //      * If `ants` contains no ants, the method returns "No ants here. Did you work them to death?"
-      // 🧠 Instances of AntFarm have a `feed` method:
-      //      * The method takes as its only argument the name of the particular ant(s) to feed
-      //      * When invoked, the ant(s) by the given name obtain a health increase of 15 points
-      //      * The method returns the string "Yum!" if any ants by the given name exist
-      //      * The method returns the string "<ant name> not found!" if no ants by the given name exist
-      // 🌟 Example:
-      //      const farm = new AntFarm('Jess', 'Blake');
-      //      farm.ants;         // evaluates to [{name: 'Jess', health: 100}, {name: 'Blake', health: 100}]
-      //      farm.work();       // returns "2 ants starting work!"
-      //      farm.ants;         // evaluates to [{name: 'Jess', health: 80}, {name: 'Blake', health: 80}]
-      //      farm.feed('Jess'); // returns "Yum!"
-      //      farm.ants;         // evaluates to [{name: 'Jess', health: 95}, {name: 'Blake', health: 80}]
-      // 👉 HINT: when replacing a list with a modified list of the same length you can use map:
-      //      let list = ['a','b','c']
-      //      list = list.map(item => (item === "a" ? item + item : item))
-      //      console.log(list) // prints ["aa","b","c"]
-      // 👉 HINT: when replacing a list with a filtered list you can use filter:
-      //      let list = ['a','b','c']
-      //      list = list.filter(item => item === "a")
-      //      console.log(list) // prints ["a"]
-      // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
-      //      and with the piece of mind of all tests passing, refactor to use map/filter
-      constructor(...antNames) {
-        this.ants = antNames.map(name => {
-          return { name, health: 100 }
-        })
-      }
-      work() {
-        const antCount = this.ants.length
-        if (!antCount) {
-          return "No ants here. Did you work them to death?"
-        }
-        this.ants = this.ants.map(a => {
-          a.health -= 20
-          return a
-        })
-        this.ants = this.ants.filter(a => {
-          return a.health > 0
-        })
-        return `${antCount} ants starting work!`
-      }
-      feed(antName) {
-        let counter = 0
-        this.ants = this.ants.map(a => {
-          if (a.name === antName) {
-            counter++
-            a.health += 15
+    // 👉 CHALLENGE 4
+    function scrub(text, forbidden) {
+      // 🧠 scrub takes a string "text" as its first argument, and an array of forbidden words "forbidden" as its second
+      // Any word in the text included in the array of forbidden words is replaced with a word of equal length but made of lowcase "x"
+      // The scrubbed text is then returned from the function, as seen in the examples below
+      // No punctuation is used in the text
+      // 🧠 Examples of usage:
+      //    scrub("out of the silent planet", ["of", "silent"]) // returns "out xx the xxxxxx planet"
+      //    scrub("the ghost of the navigator", ["the"]) // returns "xxx ghost of xxx navigator"
+      //    scrub("lost somewhere in time", []) // returns "lost somewhere in time"
+      //    scrub("aces high", ["high", "aces", "hearts"]) // returns "xxxx xxxx"
+      //    scrub("", ["high", "aces""]) // returns ""
+      // 🌟 HINT: useful array methods to use are `push`, `indexOf`, `split`, `join`
+      if (!text.length || !forbidden.length) return text
+      const words = text.split(' ')
+      const result = []
+      for (let idx = 0; idx < words.length; idx++) {
+        const word = words[idx]
+        let idxForbidden = forbidden.indexOf(word)
+        if (idxForbidden > -1) {
+          let sub = ''
+          for (let char in forbidden[idxForbidden]) {
+            sub += 'x'
           }
-          return a
-        })
-        return counter ? `Yum!` : `${antName} not found!`
+          result.push(sub)
+        } else {
+          result.push(word)
+        }
+      }
+      return result.join(' ')
+    }
+
+    // 👉 CHALLENGE 5
+    function normalizePhoneNumber(num) {
+      // 🧠 normalizePhoneNumber takes a string as its only argument, representing a ten-digit number
+      // The function returns a string formatted as seen below
+      // 🧠 Examples of usage:
+      // normalizePhoneNumber("9876543210") // returns "(987) 654-3210"
+      // normalizePhoneNumber("1111111111") // returns "(111) 111-1111"
+      // 🧠 Edge cases:
+      //   * If the argument is of an incorrect length, return the string "type a 10-digit number"
+      //   * If the argument is of the correct length but any character is not an integer between 0 and 9, return "invalid phone number"
+      // 🌟 HINT: instead of looping over the number's digits, loop backwards over a template "(XXX) XXX-XXXX"
+      // 🌟 HINT: at each iteration, if the current character is an "X", replace it with the result of popping a digit from the number
+      // 🌟 HINT: if you'd rather loop forwards, use `shift` instead of `pop`
+      if (num.length !== 10) return "type a 10-digit number"
+      const template = '(XXX) XXX-XXXX'.split('')
+      const digits = num.split('')
+      let invalidDigit = false
+      for (let idx = template.length - 1; idx >= 0; idx--) {
+        if (template[idx] === 'X') {
+          const digit = digits.pop()
+          if (
+            digit !== '0' &&
+            digit !== '1' &&
+            digit !== '2' &&
+            digit !== '3' &&
+            digit !== '4' &&
+            digit !== '5' &&
+            digit !== '6' &&
+            digit !== '7' &&
+            digit !== '8' &&
+            digit !== '9'
+          ) {
+            return "invalid phone number"
+          }
+          template[idx] = digit
+        }
+      }
+      return template.join('')
+    }
+
+    // 👉 CHALLENGE 6 (bonus, NOT graded)
+    function diceRolls() {
+      // 🧠 diceRolls takes no arguments and returns a number
+      // The function throws a six-sided dice until 3 sixes in a row are obtained
+      // The number of throws it took to obtain that third-in-a-row six is then returned from the function
+      // 🌟 HINT: research using `Math.random` to obtain a number from 1 to 6
+      // 🌟 HINT: use `while(true)` to throw the dice indefinitely, but avoid an infinite loop by making sure to break out eventually
+      // 🌟 HINT: you need to keep track of the total number of throws, as well as how many sixes in a row
+      let throws = 0
+      let counter = 0
+      while (true) {
+        throws++
+        const num = Math.floor(Math.random() * 6) + 1
+        if (num === 6) counter++
+        else counter = 0
+        if (counter === 3) {
+          return throws
+        }
       }
     }
 
@@ -233,291 +256,107 @@
     // 🧪 TESTS, do not make any changes below this line ===================
     // 🧪 TESTS, do not make any changes below this line ===================
     globalThis.challengeVersion = 1
-    globalThis.Integers = Integers
-    globalThis.NerfGun = NerfGun
-    globalThis.EBook = EBook
-    globalThis.AntFarm = AntFarm
+    globalThis.profileActivation = profileActivation
+    globalThis.mineSweeper = mineSweeper
+    globalThis.booleanize = booleanize
+    globalThis.scrub = scrub
+    globalThis.normalizePhoneNumber = normalizePhoneNumber
+    globalThis.diceRolls = diceRolls
 
     try {
-      testClass('CHALLENGE 1 - class Integers', [
-        function () {
-          let actual, description = 'getAll returns all the ints'
-          let expected = [1, 2, 3, 4]
-          try {
-            const ints = new Integers(1, 2, 3, 4)
-            actual = ints.getAll()
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'getEvens returns the even ints'
-          let expected = [0, 2, 4]
-          try {
-            const ints = new Integers(0, 2, 3, 5, 4)
-            actual = ints.getEvens()
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'getNegatives returns the negative ints'
-          let expected = [-3, -5]
-          try {
-            const ints = new Integers(-3, 5, -5, 0)
-            actual = ints.getNegatives()
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'getAllSquared returns the ints squared'
-          let expected = [4, 1, 0, 36, 25]
-          try {
-            const ints = new Integers(2, 1, 0, 6, 5)
-            actual = ints.getAllSquared()
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'pop removes the last int and returns it'
-          let expected = [3, [1, 2]]
-          try {
-            const ints = new Integers(1, 2, 3)
-            actual = []
-            actual.push(ints.pop())
-            actual.push(ints.ints)
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'push adds an integer into ints and returns the updated ints'
-          let expected = [[1, 2, 3, 4], [1, 2, 3, 4]]
-          try {
-            const ints = new Integers(1, 2, 3)
-            actual = []
-            actual.push(ints.push(4))
-            actual.push(ints.ints)
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'getEveryNth returns ints at every nth index'
-          let expected = [[1, 3, 5], [1, 4]]
-          try {
-            const ints = new Integers(1, 2, 3, 4, 5, 6)
-            actual = []
-            actual.push(ints.getEveryNth(2))
-            actual.push(ints.getEveryNth(3))
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'getAllReversed returns the ints in reverse order'
-          let expected = [[6, 5, 4, 3, 2, 1], [0, 1, 9, 3, 6, 9]]
-          try {
-            const ints = new Integers(1, 2, 3, 4, 5, 6)
-            const ints2 = new Integers(9, 6, 3, 9, 1, 0)
-            actual = []
-            actual.push(ints.getAllReversed())
-            actual.push(ints2.getAllReversed())
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
+      runTests('CHALLENGE 1 - profileActivation', profileActivation, [
+        [[{}], 'impossible to ascertain status'],
+        [[{ active: true, reason: '' }], 'confirm status manually'],
+        [[{ active: true, reason: 'because' }], 'confirm status manually'],
+        [[{ active: false }], 'confirm status manually'],
+        [[{ active: true }, 'because'], { active: false, reason: 'because' }],
+        [[{ active: false, reason: 'because' }], { active: true }],
       ])
-      testClass('CHALLENGE 2 - class NerfGun', [
-        function () {
-          let actual, description = 'A new NerfGun has its safety on'
-          let expected = "Click!"
-          try {
-            const nerf = new NerfGun(6)
-            actual = nerf.shoot()
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'A NerfGun can disable safety, shoot, re-enable safety'
-          let expected = ["Safety disabled!", "Bang!", "Safety enabled!", "Click!"]
-          try {
-            const nerf = new NerfGun(6)
-            actual = []
-            actual.push(nerf.toggleSafety())
-            actual.push(nerf.shoot())
-            actual.push(nerf.toggleSafety())
-            actual.push(nerf.shoot())
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'A NerfGun can not shoot after running out of projectiles'
-          let expected = ["Bang!", "Bang!", "Bang!", "Click!"]
-          try {
-            const nerf = new NerfGun(3)
-            nerf.toggleSafety()
-            actual = []
-            actual.push(nerf.shoot()); actual.push(nerf.shoot()); actual.push(nerf.shoot()); actual.push(nerf.shoot())
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'A NerfGun can be reloaded to less than capacity'
-          let expected = ["2 projectiles left!", "Bang!", "Bang!", "Click!"]
-          try {
-            const nerf = new NerfGun(3)
-            nerf.toggleSafety()
-            nerf.shoot()
-            nerf.shoot()
-            nerf.shoot()
-            actual = []
-            actual.push(nerf.reload(2))
-            actual.push(nerf.shoot()); actual.push(nerf.shoot()); actual.push(nerf.shoot())
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'Reloading to more than capacity only fills NerfGun to capacity'
-          let expected = ["3 projectiles left!", "Bang!", "Bang!", "Bang!", "Click!"]
-          try {
-            const nerf = new NerfGun(3)
-            nerf.toggleSafety()
-            nerf.shoot()
-            actual = []
-            actual.push(nerf.reload(100))
-            actual.push(nerf.shoot()); actual.push(nerf.shoot())
-            actual.push(nerf.shoot()); actual.push(nerf.shoot())
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'Reloading NerfGun incorrectly yields an error message'
-          let expected = ["Error reloading!", "Error reloading!", "Error reloading!"]
-          try {
-            const nerf = new NerfGun(6)
-            actual = []
-            actual.push(nerf.reload(0))
-            actual.push(nerf.reload(-1))
-            actual.push(nerf.reload('5'))
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
+      runTests('CHALLENGE 2 - mineSweeper', mineSweeper, [
+        [[[["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟦", "🟦"]], 0, 4], "invalid coordinates"],
+        [[[["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟦", "🟦"]], 0, 1], "invalid coordinates"],
+        [[[["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟦", "🟦"]], 1, 4], "invalid coordinates"],
+        [[[["🟦", "🟦", "🟥"], ["🟦", "🟦", "🟦"], ["🟦", "🟦", "🟥"]], 1, 1], "🟦 🥳"],
+        [[[["🟦", "🟥", "🟦"], ["🟦", "🟦", "🟦"], ["🟥", "🟦", "🟥"]], 2, 1], "🟥 💀"],
+        [[[["🟥", "🟦", "🟥"], ["🟥", "🟥", "🟦"], ["🟥", "🟥", "🟦"]], 3, 1], "🟥 💀"],
+        [[[["🟥", "🟦", "🟦"], ["🟥", "🟦", "🟥"], ["🟦", "🟦", "🟦"]], 1, 2], "🟥 💀"],
+        [[[["🟥", "🟥", "🟥"], ["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟦"]], 2, 2], "🟦 🥳"],
+        [[[["🟥", "🟦", "🟦"], ["🟦", "🟥", "🟥"], ["🟥", "🟥", "🟦"]], 3, 2], "🟥 💀"],
+        [[[["🟥", "🟥", "🟥"], ["🟦", "🟦", "🟥"], ["🟥", "🟥", "🟦"]], 1, 3], "🟥 💀"],
+        [[[["🟥", "🟦", "🟥"], ["🟥", "🟥", "🟥"], ["🟥", "🟦", "🟥"]], 2, 3], "🟦 🥳"],
+        [[[["🟥", "🟥", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟥", "🟦"]], 3, 3], "🟦 🥳"],
+        [[[["🟥", "🟦", "🟦"], ["🟥", "🟥", "🟦"], ["🟥", "🟥", "🟥"]], 1, 1], "🟥 💀"],
+        [[[["🟥", "🟦", "🟦"], ["🟥", "🟥", "🟦"], ["🟥", "🟥", "🟥"]], 2, 2], "🟥 💀"],
+        [[[["🟥", "🟦", "🟦"], ["🟥", "🟥", "🟦"], ["🟥", "🟥", "🟥"]], 3, 3], "🟥 💀"],
       ])
-      testClass('CHALLENGE 3 - class EBook', [
-        function () {
-          let actual, description = 'Ebook can turn pages'
-          let expected = ['abc', 'def', 'g']
-          try {
-            const book = new EBook('abcdefg', 3)
-            actual = []
-            actual.push(book.next()); actual.push(book.next()); actual.push(book.next())
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'Turning page yields null when there is no more text'
-          let expected = ['abcd', 'efgh', 'ij', null, null]
-          try {
-            const book = new EBook('abcdefghij', 4)
-            actual = []
-            actual.push(book.next()); actual.push(book.next()); actual.push(book.next())
-            actual.push(book.next()); actual.push(book.next())
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
+      runTests('CHALLENGE 3 - booleanize', booleanize, [
+        [[{ bad1: null }], {}],
+        [[{ bad1: null, bad2: null }], {}],
+        [[{ '0123456789': 1 }], 'shorten all prop names to 9 chars or less'],
+        [[{ a: 1, b: 1 }], { a: true, b: true }],
+        [[{ a: 0, b: 0 }], { a: false, b: false }],
+        [[{ a: 1, b: 0, c: null, d: 'Lady Gaga' }], { a: true, b: false, d: 'Lady Gaga' }],
       ])
-      testClass('CHALLENGE 4 - class AntFarm', [
-        function () {
-          let actual, description = 'AntFarm initializes the ants correctly'
-          let expected = [
-            { name: 'Jess', health: 100 }, { name: 'Blake', health: 100 }, { name: 'Jess', health: 100 }
-          ]
-          try {
-            const farm = new AntFarm('Jess', 'Blake', 'Jess')
-            actual = farm.ants
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'Working substracts 20 health points'
-          let expected = [
-            { name: 'Jess', health: 80 }, { name: 'Blake', health: 80 }, { name: 'Jess', health: 80 }
-          ]
-          try {
-            const farm = new AntFarm('Jess', 'Blake', 'Jess')
-            farm.work()
-            actual = farm.ants
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'Overworking kills the ants'
-          let expected = []
-          try {
-            const farm = new AntFarm('Jess', 'Blake', 'Jess')
-            farm.work(); farm.work(); farm.work(); farm.work(); farm.work()
-            actual = farm.ants
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'Working returns the correct string'
-          let expected = ["3 ants starting work!", "1 ants starting work!", "No ants here. Did you work them to death?"]
-          try {
-            const farm = new AntFarm('Jess', 'Blake', 'Jess')
-            farm.ants[0].health++
-            actual = []
-            farm.work(); farm.work(); farm.work(); farm.work()
-            actual.push(farm.work()); actual.push(farm.work()); actual.push(farm.work())
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'Feeding increases 15 health points of lucky ant(s)'
-          let expected = [{ name: "Jess", "health": 115 }, { name: "Blake", health: 100 }, { name: "Jess", health: 115 }]
-          try {
-            const farm = new AntFarm('Jess', 'Blake', 'Jess')
-            farm.feed('Jess')
-            actual = farm.ants
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
-        function () {
-          let actual, description = 'Feeding returns the correct string'
-          let expected = ["Yum!", "bad name not found!", "another bad name not found!"]
-          try {
-            const farm = new AntFarm('Jess', 'Blake', 'Jess')
-            actual = []
-            actual.push(farm.feed('Blake'))
-            actual.push(farm.feed('bad name'))
-            actual.push(farm.feed('another bad name'))
-          } catch (err) { actual = err.message }
-          return [description, expected, actual]
-        },
+      runTests('CHALLENGE 4 - scrub', scrub, [
+        [["out of the silent planet", ["of", "silent"]], "out xx the xxxxxx planet"],
+        [["out of the silent planet", ["of", "planet"]], "out xx the silent xxxxxx"],
+        [["the ghost of the navigator", ["the"]], "xxx ghost of xxx navigator"],
+        [["lost somewhere in time", []], "lost somewhere in time"],
+        [["aces high", ["high", "aces", "hearts"]], "xxxx xxxx"],
+        [["", ["high", "aces"]], ""],
       ])
-      function testClass(testTitle, tests) {
-        console.log(testTitle)
-        tests.forEach((test, idx) => {
-          const [, expected, actual] = test()
-          const [desJSON, expJSON, actJSON] = test().map(JSON.stringify)
-          if (_.isEqual(expected, actual)) {
-            console.log(`\t✅ Test ${idx + 1} ${desJSON} PASSED`)
-          } else {
-            console.log(`\t❌ Test ${idx + 1} ${desJSON} FAILED:
-              Expected ${expJSON}
-              Actual   ${actJSON}`)
-          }
+      runTests('CHALLENGE 5 - normalizePhoneNumber', normalizePhoneNumber, [
+        [["1234567890"], "(123) 456-7890"],
+        [["1111111111"], "(111) 111-1111"],
+        [["9876543210"], "(987) 654-3210"],
+        [[""], "type a 10-digit number"],
+        [["x"], "type a 10-digit number"],
+        [["987654321"], "type a 10-digit number"],
+        [["98765432100"], "type a 10-digit number"],
+        [["987654321x"], "invalid phone number"],
+        [["x876543210"], "invalid phone number"],
+        [["98765x3210"], "invalid phone number"],
+      ])
+      console.log('\nCHALLENGE 6 does not have auto tests')
+      function runTests(testName, func, tests) {
+        let results = []
+        tests.forEach(test => {
+          const originalArgsList = _.cloneDeep(test[0])
+          const argsList = test[0]
+          const expected = test[1]
+          const actual = func.apply(null, argsList)
+          results.push([argsList, expected, actual, originalArgsList])
+        })
+        console.log('\n' + testName)
+        if (results.every(result => _.isEqual(result[1], result[2]))) console.log('\t✅ All tests pass')
+        else if (results.every(result => !_.isEqual(result[1], result[2]))) console.log('\t❌ All tests fail')
+        else results.forEach((result, idx) => {
+          if (_.isEqual(result[1], result[2])) console.log(`\t✅ Test ${idx + 1} passes`)
+          else console.log(`\t❌ Test ${idx + 1} fails:
+        ${func.name}(${result[3].map(JSON.stringify)})
+        👉 should return ${JSON.stringify(result[1])}
+        👉 but returns ${JSON.stringify(result[2])}`)
         })
       }
-      let getTextArea = () => document.querySelector('.widget textarea')
-      let getNumberInput = () => document.querySelector('.widget input[type=number]')
-      const getText = () => getTextArea().value
-      const getChars = () => Number(getNumberInput().value)
-      turnPage.disabled = true
-      let book
-      let updateBook = () => {
-        turnPage.disabled = (getText() && getChars() && getChars() > 0) ? false : true
-        book = new EBook(getText(), getChars())
-      }
-      getTextArea().oninput = updateBook
-      getNumberInput().oninput = updateBook
-      turnPage.onclick = () => {
-        bookPage.textContent = book.next() || 'The End'
+      const gridElems = [Array.from(row1.children), Array.from(row2.children), Array.from(row3.children)]
+      const squares = ["🟥", "🟦"]
+      let grid = [[], [], []]
+      gridElems.forEach((row, idxRow) => {
+        row.forEach((square, idxSquare) => {
+          const emoji = squares[Math.floor(Math.random() * 2)]
+          grid[idxRow].push(emoji)
+          if (emoji === squares[0]) square.style.backgroundColor = '#ffecec'
+          else square.style.backgroundColor = '#f2f2ff'
+          square.onclick = () => {
+            const x = idxSquare + 1
+            const y = idxRow + 1
+            console.log(`\nYou clicked coordinates [${x}, ${y}]`)
+            outcome.textContent = mineSweeper(grid, x, y)
+          }
+        })
+      })
+      phoneNumInput.oninput = evt => {
+        normalized.textContent = normalizePhoneNumber(evt.target.value)
       }
     } catch (err) { console.error(err.stack) }
   </script>
